@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "TestCompoundCube.h"
 #include "TestTriangle.h"
 #include "TestCubie.h"
 
@@ -14,6 +15,7 @@ GameInterface gDummyInterface;
 TestGlm gTestGlm;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
+TestCompoundCube gTestCompoundCube;
 
 
 GameInterface* gUsedInterface;
@@ -55,6 +57,9 @@ GLFWwindow* InitializeSystem()
     glDebugMessageCallback(openGLDebugCallback, nullptr);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_FRONT);
+
     gUsedInterface->Initialize(window);
 
     return window;
@@ -86,6 +91,7 @@ void RunCoreLoop(GLFWwindow* window)
 
         gUsedInterface->Render(aspectRatio);
         glfwSwapBuffers(window);
+        glfwSwapInterval(1);
 
         double currentTime = glfwGetTime();
         timeDifference = currentTime - lastTime;
@@ -106,7 +112,8 @@ int main()
     // gUsedInterface = &gDummyInterface;
     // gUsedInterface = &gTestGlm;
     // gUsedInterface = &gTestTriangle;
-    gUsedInterface = &gTestCubie;
+    // gUsedInterface = &gTestCubie;
+    gUsedInterface = &gTestCompoundCube;
     GLFWwindow* window = InitializeSystem();
     RunCoreLoop(window);
     ShutdownSystem();
